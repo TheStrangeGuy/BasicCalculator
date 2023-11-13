@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basic Calculator</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <div id="calculator">
+    <input type="text" id="display" disabled>
+    <br>
+    <button onclick="appendNumber('7')">7</button>
+    <button onclick="appendNumber('8')">8</button>
+    <button onclick="appendNumber('9')">9</button>
+    <button class="operator" onclick="setOperator('/')">/</button>
+    <br>
+    <button onclick="appendNumber('4')">4</button>
+    <button onclick="appendNumber('5')">5</button>
+    <button onclick="appendNumber('6')">6</button>
+    <button class="operator" onclick="setOperator('*')">*</button>
+    <br>
+    <button onclick="appendNumber('1')">1</button>
+    <button onclick="appendNumber('2')">2</button>
+    <button onclick="appendNumber('3')">3</button>
+    <button class="operator" onclick="setOperator('-')">-</button>
+    <br>
+    <button onclick="appendNumber('0')">0</button>
+    <button onclick="appendDecimal()">.</button>
+    <button class="equal" onclick="calculate()">=</button>
+    <button class="operator" onclick="setOperator('+')">+</button>
+    <br>
+    <button class="special" onclick="clearDisplay()">C</button>
+    <button class="special" onclick="calculatePercentage()">%</button>
+    <button class="special" onclick="calculateSquare()">x²</button>
+    <button class="special" onclick="calculateSquareRoot()">√</button>
+  </div>
+
+  <script>
+    let currentInput = '';
+    let operator = '';
+    let previousInput = '';
+
+    function appendNumber(number) {
+      currentInput += number;
+      updateDisplay();
+    }
+
+    function appendDecimal() {
+      if (!currentInput.includes('.')) {
+        currentInput += '.';
+        updateDisplay();
+      }
+    }
+
+    function setOperator(op) {
+      operator = op;
+      previousInput = currentInput;
+      currentInput = '';
+      updateDisplay();
+    }
+
+    function clearDisplay() {
+      currentInput = '';
+      operator = '';
+      previousInput = '';
+      updateDisplay();
+    }
+
+    function calculate() {
+        let result;
+  const num1 = parseFloat(previousInput);
+  const num2 = parseFloat(currentInput);
+
+  if (isNaN(num1) || isNaN(num2)) {
+    alert('Invalid input');
+    clearDisplay();
+    return;
+  }
+
+  switch (operator) {
+    case '+':
+      result = num1 + num2;
+      break;
+    case '-':
+      result = num1 - num2;
+      break;
+    case '*':
+      result = num1 * num2;
+      break;
+    case '/':
+      if (num2 !== 0) {
+        result = num1 / num2;
+      } else {
+        alert('Cannot divide by zero');
+        clearDisplay();
+        return;
+      }
+      break;
+    default:
+      alert('Invalid operator');
+      clearDisplay();
+      return;
+  }
+
+  clearDisplay();
+  currentInput = result.toString();
+  updateDisplay();
+    }
+
+    function calculatePercentage() {
+      const num = parseFloat(currentInput);
+      if (!isNaN(num)) {
+        currentInput = (num / 100).toString();
+        updateDisplay();
+      }
+    }
+
+    function calculateSquare() {
+      const num = parseFloat(currentInput);
+      if (!isNaN(num)) {
+        currentInput = (num * num).toString();
+        updateDisplay();
+      }
+    }
+
+    function calculateSquareRoot() {
+      const num = parseFloat(currentInput);
+      if (!isNaN(num)) {
+        currentInput = Math.sqrt(num).toString();
+        updateDisplay();
+      }
+    }
+
+    function updateDisplay() {
+      document.getElementById('display').value = currentInput;
+    }
+  </script>
+</body>
+</html>
